@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Capabilities xmlns="http://www.opengis.net/wmts/1.0" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gml="http://www.opengis.net/gml" xsi:schemaLocation="http://www.opengis.net/wmts/1.0 http://schemas.opengis.net/wmts/1.0/wmtsGetCapabilities_response.xsd" version="1.0.0">
+	<ows:ServiceIdentification>
+		<ows:Title>Web Map Tile Service </ows:Title>
+		<ows:ServiceType>OGC WMTS</ows:ServiceType>
+		<ows:ServiceTypeVersion>1.0.0</ows:ServiceTypeVersion>
+	</ows:ServiceIdentification>
+	<ows:ServiceProvider>
+		<ows:ProviderName>http://map.ngii.go.kr/</ows:ProviderName>
+		<ows:ProviderSite xlink:href="https://gportal.nifos.go.kr/eemap"/>
+		<ows:ServiceContact>
+			<ows:IndividualName>Nlip</ows:IndividualName>
+		</ows:ServiceContact>
+	</ows:ServiceProvider>
+	<ows:OperationsMetadata>
+		<ows:Operation name="GetCapabilities">
+			<ows:DCP>
+				<ows:HTTP>
+					<ows:Get xlink:href="https://your-server.domain.com/Java/ngiimap/1.0.0/WMTSCapabilities.xml">
+						<ows:Constraint name="GetEncoding">
+							<ows:AllowedValues>
+								<ows:Value>RESTful</ows:Value>
+							</ows:AllowedValues>
+						</ows:Constraint>
+					</ows:Get>
+				</ows:HTTP>
+			</ows:DCP>
+		</ows:Operation>
+		<ows:Operation name="GetTile">
+			<ows:DCP>
+				<ows:HTTP>
+					<ows:Get xlink:href="https://your-server.domain.com/Java/proxy.jsp?https://map.ngii.go.kr/openapi/Gettile.do">
+						<ows:Constraint name="GetEncoding">
+							<ows:AllowedValues>
+								<ows:Value>RESTful</ows:Value>
+							</ows:AllowedValues>
+						</ows:Constraint>
+					</ows:Get>
+				</ows:HTTP>
+			</ows:DCP>
+		</ows:Operation>
+	</ows:OperationsMetadata>
+	<Contents>
+		<Layer>
+			<ows:Title>위성지도</ows:Title>
+			<ows:WGS84BoundingBox>
+				<ows:LowerCorner>124.0 33.0</ows:LowerCorner>
+				<ows:UpperCorner>132.0 43.0</ows:UpperCorner>
+			</ows:WGS84BoundingBox>
+			<ows:BoundingBox crs="urn:ogc:def:crs:EPSG::5179">
+				<ows:LowerCorner>600000 1300000</ows:LowerCorner>
+				<ows:UpperCorner>1450000 2600000</ows:UpperCorner>
+			</ows:BoundingBox>
+			<ows:Identifier>satellite_map</ows:Identifier>
+			<Style isDefault="true">
+				<ows:Identifier>satellite_map</ows:Identifier>
+			</Style>
+			<Format>image/png</Format>
+			<TileMatrixSetLink>
+				<TileMatrixSet>ngiimap</TileMatrixSet>
+			</TileMatrixSetLink>
+
+			<ResourceURL format="image/png" resourceType="tile" template="https://your-server.domain.com/Java/proxy.jsp?https://map.ngii.go.kr/openapi/Gettile.do?service=WMTS&amp;request=GetTile&amp;version=1.0.0&amp;layer={Style}&amp;style=korean&amp;format=image/png&amp;tilematrixset=korean&amp;tilematrix={TileMatrix}&amp;tilerow={TileRow}&amp;tilecol={TileCol}"/>
+
+		</Layer>
+		<TileMatrixSet>
+			<ows:Identifier>ngiimap</ows:Identifier>
+			<ows:SupportedCRS>urn:ogc:def:crs:EPSG::5179</ows:SupportedCRS>
+			<TileMatrix>
+				<ows:Identifier>L05</ows:Identifier>
+				<ScaleDenominator>7460571.428571428</ScaleDenominator>
+				<TopLeftCorner>-200000.0 4000000.0</TopLeftCorner>
+				<TileWidth>256</TileWidth>
+				<TileHeight>256</TileHeight>
+				<MatrixWidth>60</MatrixWidth>
+				<MatrixHeight>60</MatrixHeight>
+			</TileMatrix>
+			<TileMatrix>
+				<ows:Identifier>L06</ows:Identifier>
+				<ScaleDenominator>3730285.714285714</ScaleDenominator>
+				<TopLeftCorner>-200000.0 4000000.0</TopLeftCorner>
+				<TileWidth>256</TileWidth>
+				<TileHeight>256</TileHeight>
+				<MatrixWidth>120</MatrixWidth>
+				<MatrixHeight>120</MatrixHeight>
+			</TileMatrix>
+			<TileMatrix>
+				<ows:Identifier>L07</ows:Identifier>
+				<ScaleDenominator>1865142.857142857</ScaleDenominator>
+				<TopLeftCorner>-200000.0 4000000.0</TopLeftCorner>
+				<TileWidth>256</TileWidth>
+				<TileHeight>256</TileHeight>
+				<MatrixWidth>240</MatrixWidth>
+				<MatrixHeight>240</MatrixHeight>
+			</TileMatrix>
+			<TileMatrix>
+				<ows:Identifier>L08</ows:Identifier>
+				<ScaleDenominator>932571.4285714285</ScaleDenominator>
+				<TopLeftCorner>-200000.0 4000000.0</TopLeftCorner>
+				<TileWidth>256</TileWidth>
+				<TileHeight>256</TileHeight>
+				<MatrixWidth>480</MatrixWidth>
+				<MatrixHeight>480</MatrixHeight>
+			</TileMatrix>
+			<TileMatrix>
+				<ows:Identifier>L09</ows:Identifier>
+				<ScaleDenominator>466285.71428571426</ScaleDenominator>
+				<TopLeftCorner>-200000.0 4000000.0</TopLeftCorner>
+				<TileWidth>256</TileWidth>
+				<TileHeight>256</TileHeight>
+				<MatrixWidth>960</MatrixWidth>
+				<MatrixHeight>960</MatrixHeight>
+			</TileMatrix>
+			<TileMatrix>
+				<ows:Identifier>L10</ows:Identifier>
+				<ScaleDenominator>233142.85714285713</ScaleDenominator>
+				<TopLeftCorner>-200000.0 4000000.0</TopLeftCorner>
+				<TileWidth>256</TileWidth>
+				<TileHeight>256</TileHeight>
+				<MatrixWidth>1920</MatrixWidth>
+				<MatrixHeight>1920</MatrixHeight>
+			</TileMatrix>
+			<TileMatrix>
+				<ows:Identifier>L11</ows:Identifier>
+				<ScaleDenominator>116571.42857142857</ScaleDenominator>
+				<TopLeftCorner>-200000.0 4000000.0</TopLeftCorner>
+				<TileWidth>256</TileWidth>
+				<TileHeight>256</TileHeight>
+				<MatrixWidth>3840</MatrixWidth>
+				<MatrixHeight>3840</MatrixHeight>
+			</TileMatrix>
+			<TileMatrix>
+				<ows:Identifier>L12</ows:Identifier>
+				<ScaleDenominator>58285.71428571428</ScaleDenominator>
+				<TopLeftCorner>-200000.0 4000000.0</TopLeftCorner>
+				<TileWidth>256</TileWidth>
+				<TileHeight>256</TileHeight>
+				<MatrixWidth>7680</MatrixWidth>
+				<MatrixHeight>7680</MatrixHeight>
+			</TileMatrix>
+			<TileMatrix>
+				<ows:Identifier>L13</ows:Identifier>
+				<ScaleDenominator>29142.85714285714</ScaleDenominator>
+				<TopLeftCorner>-200000.0 4000000.0</TopLeftCorner>
+				<TileWidth>256</TileWidth>
+				<TileHeight>256</TileHeight>
+				<MatrixWidth>15360</MatrixWidth>
+				<MatrixHeight>15360</MatrixHeight>
+			</TileMatrix>
+			<TileMatrix>
+				<ows:Identifier>L14</ows:Identifier>
+				<ScaleDenominator>14571.42857142857</ScaleDenominator>
+				<TopLeftCorner>-200000.0 4000000.0</TopLeftCorner>
+				<TileWidth>256</TileWidth>
+				<TileHeight>256</TileHeight>
+				<MatrixWidth>30720</MatrixWidth>
+				<MatrixHeight>30720</MatrixHeight>
+			</TileMatrix>
+			<TileMatrix>
+				<ows:Identifier>L15</ows:Identifier>
+				<ScaleDenominator>7285.714285714285</ScaleDenominator>
+				<TopLeftCorner>-200000.0 4000000.0</TopLeftCorner>
+				<TileWidth>256</TileWidth>
+				<TileHeight>256</TileHeight>
+				<MatrixWidth>61440</MatrixWidth>
+				<MatrixHeight>61440</MatrixHeight>
+			</TileMatrix>
+			<TileMatrix>
+				<ows:Identifier>L16</ows:Identifier>
+				<ScaleDenominator>3642.8571428571427</ScaleDenominator>
+				<TopLeftCorner>-200000.0 4000000.0</TopLeftCorner>
+				<TileWidth>256</TileWidth>
+				<TileHeight>256</TileHeight>
+				<MatrixWidth>122880</MatrixWidth>
+				<MatrixHeight>122880</MatrixHeight>
+			</TileMatrix>
+			<TileMatrix>
+				<ows:Identifier>L17</ows:Identifier>
+				<ScaleDenominator>1821.4285714285713</ScaleDenominator>
+				<TopLeftCorner>-200000.0 4000000.0</TopLeftCorner>
+				<TileWidth>256</TileWidth>
+				<TileHeight>256</TileHeight>
+				<MatrixWidth>245760</MatrixWidth>
+				<MatrixHeight>245760</MatrixHeight>
+			</TileMatrix>
+            <TileMatrix>
+                <ows:Identifier>L18</ows:Identifier>
+                <ScaleDenominator>910.7142857142857</ScaleDenominator>
+				<TopLeftCorner>-200000.0 4000000.0</TopLeftCorner>
+				<TileWidth>256</TileWidth>
+				<TileHeight>256</TileHeight>
+				<MatrixWidth>491520</MatrixWidth>
+				<MatrixHeight>491520</MatrixHeight>
+            </TileMatrix>
+		</TileMatrixSet>
+</Contents>
+</Capabilities>
