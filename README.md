@@ -29,27 +29,40 @@ NGII Open API(`map.ngii.go.kr/openapi`)는 위성 및 항공 타일을 제공하
 
 ## 동작 원리
 
-```
-ArcGIS Pro / Portal
-      │  GetCapabilities
-      ▼
-WMTSCapabilities.xml (정적 파일)
-      │
-      │  GetTile
-      ▼
-proxy.jsp
-      │  apikey 자동 첨부, layer 파라미터 보정
-      ▼
-map.ngii.go.kr/openapi (NGII Open API)
+```mermaid
+flowchart TB
+    accTitle: NGII WMTS 프록시 요청 처리 상세 흐름
+    accDescr: ArcGIS Pro/Portal의 GetCapabilities·GetTile 요청이 정적 캡캐빌리티 문서, KVP 방식 재구성 요청 처리, proxy.jsp의 허용 목록 검사·apikey 첨부·layer 보정을 거쳐 NGII Open API에 도달하는 과정을 보여준다.
+
+    subgraph client_layer ["ArcGIS Pro / Portal"]
+        client["클라이언트"]:::input_style
+    end
+
+    subgraph static_layer ["Tomcat 정적 서빙"]
+        caps[("WMTSCapabilities.xml<br/>정적 파일")]:::process_style
+        kvp_handler["ngiimap/index.jsp<br/>KVP GetCapabilities 응답"]:::process_style
+    end
+
+    subgraph proxy_layer ["proxy.jsp"]
+        check_allowlist{"대상 서버가<br/>허용 목록에 있나?"}
+        inject_apikey["apikey 자동 첨부"]:::process_style
+        fix_layer["layer 파라미터 보정<br/>(fixLayerParam)"]:::process_style
+        reject["요청 거부"]:::aux_style
+    end
+
+    client -->|GetCapabilities| caps
+    client -->|"KVP GetCapabilities<br/>(Portal 재구성)"| kvp_handler
+    client -->|GetTile| check_allowlist
+    check_allowlist -->|예| inject_apikey --> fix_layer --> ngii[("NGII Open API<br/>map.ngii.go.kr")]:::output_style
+    check_allowlist -->|아니오| reject
+
+    classDef input_style fill:#e9eeec,stroke:#4c5b60,stroke-width:2px,color:#2c3a3d
+    classDef process_style fill:#232522,stroke:#111111,stroke-width:2px,color:#f5f3ec
+    classDef output_style fill:#f6efde,stroke:#8a6f45,stroke-width:2px,color:#4a3b22
+    classDef aux_style fill:none,stroke:#a85e1a,stroke-width:2px,stroke-dasharray:4 3,color:#7a4712
 ```
 
-- `WMTSCapabilities.xml`은 NGII의 실제 타일 격자(원점, 해상도, 레벨별 행/열 수)를 기술하는 정적
-  파일이며, Tomcat이 이를 그대로 서빙합니다.
-- 타일 요청은 `ResourceURL` 템플릿을 통해 항상 `proxy.jsp`를 경유합니다. `proxy.jsp`는 대상 서버가
-  허용 목록에 포함되어 있는지 확인한 뒤, NGII로 향하는 요청에 한해 `apikey`를 자동으로 첨부하여
-  전달합니다.
-- `ngiimap/index.jsp`는 Portal이 재구성하여 전송하는 KVP 방식 `GetCapabilities` 요청
-  (`?request=GetCapabilities&service=WMTS&version=1.0.0`)에도 동일한 캡캐빌리티 문서로 응답합니다.
+`WMTSCapabilities.xml`은 NGII의 실제 타일 격자(원점, 해상도, 레벨별 행/열 수)를 기술하는 정적 파일이며, Tomcat이 이를 그대로 서빙합니다.
 
 ## 요구사항
 
@@ -206,28 +219,40 @@ Portal, by contrast, require a standard OGC WMTS `GetCapabilities` document and 
 
 ### How it works
 
-```
-ArcGIS Pro / Portal
-      │  GetCapabilities
-      ▼
-WMTSCapabilities.xml (static file)
-      │
-      │  GetTile
-      ▼
-proxy.jsp
-      │  apikey injected automatically, layer parameter corrected
-      ▼
-map.ngii.go.kr/openapi (NGII Open API)
+```mermaid
+flowchart TB
+    accTitle: NGII WMTS Proxy Request Handling In Detail
+    accDescr: Shows GetCapabilities and GetTile requests from ArcGIS Pro/Portal reaching the NGII Open API through a static capabilities document, KVP-style request handling, and proxy.jsp's allow-list check, API key injection, and layer-parameter fix.
+
+    subgraph client_layer ["ArcGIS Pro / Portal"]
+        client["Client"]:::input_style
+    end
+
+    subgraph static_layer ["Tomcat static serving"]
+        caps[("WMTSCapabilities.xml<br/>static file")]:::process_style
+        kvp_handler["ngiimap/index.jsp<br/>KVP GetCapabilities response"]:::process_style
+    end
+
+    subgraph proxy_layer ["proxy.jsp"]
+        check_allowlist{"Target server<br/>on allow list?"}
+        inject_apikey["Inject apikey"]:::process_style
+        fix_layer["Fix layer parameter<br/>(fixLayerParam)"]:::process_style
+        reject["Reject request"]:::aux_style
+    end
+
+    client -->|GetCapabilities| caps
+    client -->|"KVP GetCapabilities<br/>(Portal-reconstructed)"| kvp_handler
+    client -->|GetTile| check_allowlist
+    check_allowlist -->|yes| inject_apikey --> fix_layer --> ngii[("NGII Open API<br/>map.ngii.go.kr")]:::output_style
+    check_allowlist -->|no| reject
+
+    classDef input_style fill:#e9eeec,stroke:#4c5b60,stroke-width:2px,color:#2c3a3d
+    classDef process_style fill:#232522,stroke:#111111,stroke-width:2px,color:#f5f3ec
+    classDef output_style fill:#f6efde,stroke:#8a6f45,stroke-width:2px,color:#4a3b22
+    classDef aux_style fill:none,stroke:#a85e1a,stroke-width:2px,stroke-dasharray:4 3,color:#7a4712
 ```
 
-- `WMTSCapabilities.xml` is a static file describing NGII's real tile grid (origin, resolution,
-  columns/rows per zoom level). Tomcat serves it as is.
-- Tile requests always go through `proxy.jsp` via the `ResourceURL` template. `proxy.jsp` verifies
-  that the target server is on its allow list, then attaches an `apikey` automatically, only for
-  requests bound for NGII, before forwarding the request.
-- `ngiimap/index.jsp` responds to the KVP style `GetCapabilities` request
-  (`?request=GetCapabilities&service=WMTS&version=1.0.0`) that Portal sometimes reconstructs on
-  its own, with the same capabilities document.
+`WMTSCapabilities.xml` is a static file describing NGII's real tile grid (origin, resolution, columns/rows per zoom level). Tomcat serves it as is.
 
 ### Requirements
 
