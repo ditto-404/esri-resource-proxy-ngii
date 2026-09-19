@@ -83,7 +83,7 @@ API 키를 신청합니다. 활용 URL을 등록할 때는 `localhost`가 아니
 ### 2. 저장소 내려받기
 
 ```bash
-git clone https://github.com/hayein-bit/esri-resource-proxy-ngii.git
+git clone https://github.com/ditto-404/esri-resource-proxy-ngii.git
 ```
 
 git이 없는 경우 저장소 페이지의 **Code → Download ZIP**을 통해 내려받아 압축을 해제해도 됩니다.
@@ -275,7 +275,7 @@ instance actually responds on, not `localhost`.
 #### 2. Obtain the repository
 
 ```bash
-git clone https://github.com/hayein-bit/esri-resource-proxy-ngii.git
+git clone https://github.com/ditto-404/esri-resource-proxy-ngii.git
 ```
 
 If git is not available, the repository can also be downloaded as a ZIP from the repository page
